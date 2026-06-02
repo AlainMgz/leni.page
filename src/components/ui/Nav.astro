@@ -1,0 +1,95 @@
+---
+const navItems = [
+    { label: 'home', href: '/' },
+    { label: 'posts', href: '/posts' },
+    { label: 'contact', href: '/contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="nav">
+  <a href="/" class="nav-brand">
+    <span class="brand-bracket">[</span>
+    <span class="brand-name">leni</span>
+    <span class="brand-bracket">]</span>
+    <span class="brand-cursor">█</span>
+  </a>
+
+  <ul class="nav-links">
+    {navItems.map(item => (
+      <li>
+        <a
+          href={item.href}
+          class={`nav-link ${currentPath === item.href ? 'nav-link--active' : ''}`}
+        >
+          {currentPath === item.href ? `> ${item.label}` : item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+
+  .nav-brand {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .brand-bracket {
+    color: var(--color-text-muted);
+  }
+
+  .brand-name {
+    color: var(--color-accent-cyan);
+  }
+
+  .brand-cursor {
+    color: var(--color-accent-cyan);
+    animation: blink 1.2s step-end infinite;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    transition: color 0.15s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--color-accent-cyan);
+  }
+
+  .nav-link--active {
+    color: var(--color-accent-cyan);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+</style>

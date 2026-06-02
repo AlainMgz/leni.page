@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/ui/Nav.astro';
+---
+
+<BaseLayout title="Leni — Security Research">
+  <Nav />
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-meta">
+        <span class="hero-tag">// security researcher</span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="hero-title-dim">hi, i'm </span>
+        <span class="hero-title-name">leni</span>
+      </h1>
+
+      <p class="hero-description">
+        I am a security researcher at the Ledger Donjon, as well as a PhD candidate at ENS Paris.<br>
+        I write about my personal, academic, and professional work which includes, but is not limited to: microarchitecture, iOS/macOS security, reverse engineering and side-channel attacks.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/posts" class="btn-primary">
+          <span>cat posts/</span>
+        </a>
+        <a href="/about" class="btn-secondary">
+          <span>whoami</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="recent">
+      <h2 class="section-title">
+        <span class="section-title-prefix">~/</span>recent
+      </h2>
+      <p class="empty-state">// no posts yet — first entry incoming</p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .hero {
+    padding: 4rem 0 6rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-meta {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tag {
+    font-size: 0.8rem;
+    color: var(--color-accent-cyan);
+    letter-spacing: 0.1em;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title-dim {
+    color: var(--color-text-muted);
+  }
+
+  .hero-title-name {
+    color: var(--color-text-primary);
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    max-width: 520px;
+    line-height: 1.75;
+    margin: 0 0 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: 0.6rem 1.25rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    transition: all 0.15s ease;
+  }
+
+  .btn-primary {
+    background-color: var(--color-accent-cyan);
+    color: var(--color-background);
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background-color: transparent;
+    color: var(--color-accent-cyan);
+    outline: 1px solid var(--color-accent-cyan);
+  }
+
+  .btn-secondary {
+    color: var(--color-text-secondary);
+    outline: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    color: var(--color-text-primary);
+    outline-color: var(--color-text-secondary);
+  }
+
+  .recent {
+    padding-top: 3rem;
+  }
+
+  .section-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin: 0 0 2rem;
+  }
+
+  .section-title-prefix {
+    color: var(--color-accent-cyan);
+  }
+
+  .empty-state {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+</style>
