@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Searchbar from '../components/interactive/Searchbar';
+import { getCollection } from 'astro:content';
 
 interface Props {
     title: string;
@@ -8,6 +10,14 @@ interface Props {
 
 const { title, description = 'Security research and technical writing.' } = Astro.props as Props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const postIndex = allPosts.map(p => ({
+  slug: p.id,
+  title: p.data.title,
+  tags: p.data.tags,
+  severity: p.data.severity,
+}));
 ---
 
 <!doctype html>
@@ -30,6 +40,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
   </head>
   <body>
+    <Searchbar client:load posts={postIndex} />
     <slot />
   </body>
 </html>

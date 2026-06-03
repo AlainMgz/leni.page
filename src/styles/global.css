@@ -3,54 +3,46 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-background: #000000;
-  --color-surface: #0a0a0a;
-  --color-border: #1a1a1a;
-  --color-text-primary: #e4e4e7;
-  --color-text-secondary: #71717a;
-  --color-text-muted: #3f3f46;
+  --color-background: #0a0a12;
+  --color-surface: rgba(255,255,255,0.03);
+  --color-border: rgba(255,255,255,0.08);
+  --color-border-subtle: rgba(255,255,255,0.06);
+  --color-text-primary: rgba(255,255,255,0.92);
+  --color-text-secondary: rgba(255,255,255,0.4);
+  --color-text-muted: rgba(255,255,255,0.2);
+  --color-accent-indigo: rgba(139,92,246,0.85);
+  --color-accent-indigo-soft: rgba(99,102,241,0.18);
+  --color-accent-pink: rgba(236,72,153,0.12);
+  --color-accent-violet: rgba(167,139,250,0.8);
+  --color-accent-red: rgba(239,68,68,0.1);
   --color-accent-cyan: #00f5ff;
   --color-accent-amber: #f59e0b;
-  --color-accent-red: #ef4444;
-  --color-accent-green: #22c55e;
 
   --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   scroll-behavior: smooth;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background-color: var(--color-accent-cyan);
-  color: var(--color-background);
+  background-color: rgba(139,92,246,0.4);
+  color: rgba(255,255,255,0.95);
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent-cyan);
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-background); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.5); }
