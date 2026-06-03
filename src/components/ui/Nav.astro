@@ -12,6 +12,7 @@ const currentPath = Astro.url.pathname;
   <a href="/" class="brand">
     leni<span class="brand-dot">.</span>
   </a>
+
   <ul class="nav-links">
     {navItems.map(item => (
       <li>
@@ -24,11 +25,67 @@ const currentPath = Astro.url.pathname;
       </li>
     ))}
   </ul>
-  <button class="search-hint" onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true}))" aria-label="Open search">
-    <span class="search-hint-label">search</span>
-    <kbd class="search-hint-kbd">ctrl K</kbd>
-  </button>
+
+  <div class="nav-right">
+    <button class="search-hint" aria-label="Open search"
+      onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))">
+      <span class="search-hint-label">search</span>
+      <kbd class="search-hint-kbd">ctrl K</kbd>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
 </nav>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <ul class="mobile-links">
+    {navItems.map(item => (
+      <li>
+        <a
+          href={item.href}
+          class={`mobile-link ${currentPath === item.href ? 'mobile-link--active' : ''}`}
+        >
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+  <button
+    class="mobile-search"
+    aria-label="Open search"
+    onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true })); document.getElementById('mobile-menu').classList.remove('mobile-menu--open'); document.getElementById('hamburger').setAttribute('aria-expanded', 'false');"
+  >
+    <span>search</span>
+    <kbd>ctrl K</kbd>
+  </button>
+</div>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = mobileMenu?.classList.toggle('mobile-menu--open');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    hamburger.classList.toggle('hamburger--open', isOpen);
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (
+      mobileMenu?.classList.contains('mobile-menu--open') &&
+      !mobileMenu.contains(e.target as Node) &&
+      !hamburger?.contains(e.target as Node)
+    ) {
+      mobileMenu.classList.remove('mobile-menu--open');
+      hamburger?.setAttribute('aria-expanded', 'false');
+      hamburger?.classList.remove('hamburger--open');
+    }
+  });
+</script>
 
 <style>
   .nav {
@@ -51,12 +108,12 @@ const currentPath = Astro.url.pathname;
     color: rgba(255,255,255,0.9);
     text-decoration: none;
     letter-spacing: -0.01em;
+    flex-shrink: 0;
   }
 
-  .brand-dot {
-    color: rgba(139,92,246,0.9);
-  }
+  .brand-dot { color: rgba(139,92,246,0.9); }
 
+  /* Desktop links */
   .nav-links {
     display: flex;
     gap: 1.5rem;
@@ -74,12 +131,14 @@ const currentPath = Astro.url.pathname;
     transition: color 0.15s ease;
   }
 
-  .nav-link:hover {
-    color: rgba(255,255,255,0.75);
-  }
+  .nav-link:hover { color: rgba(255,255,255,0.75); }
+  .nav-link--active { color: rgba(255,255,255,0.85); }
 
-  .nav-link--active {
-    color: rgba(255,255,255,0.85);
+  /* Right side: search + hamburger */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .search-hint {
@@ -97,19 +156,139 @@ const currentPath = Astro.url.pathname;
   .search-hint:hover { background: rgba(255,255,255,0.06); }
 
   .search-hint-label {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.4);
     font-family: inherit;
   }
 
   .search-hint-kbd {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.05);
     border: 0.5px solid rgba(255,255,255,0.1);
     border-radius: 3px;
     padding: 1px 5px;
     font-family: inherit;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform-origin: center;
+  }
+
+  .hamburger--open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .hamburger--open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger--open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: sticky;
+    top: 57px;
+    z-index: 49;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    background: rgba(10,10,18,0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    animation: menuDrop 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .mobile-menu--open { display: flex; }
+
+  @keyframes menuDrop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .mobile-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-link {
+    display: block;
+    padding: 10px 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    border-radius: 8px;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .mobile-link:hover {
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.8);
+  }
+
+  .mobile-link--active {
+    color: rgba(255,255,255,0.9);
+    background: rgba(139,92,246,0.08);
+  }
+
+  .mobile-search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 4px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.3);
+    transition: background 0.15s;
+  }
+
+  .mobile-search:hover { background: rgba(255,255,255,0.06); }
+
+  .mobile-search kbd {
+    font-size: 0.625rem;
+    color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: inherit;
+  }
+
+  /* Breakpoint */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    /* .search-hint-label { display: none; } */
+    .search-hint-kbd { display: none; }
+    .search-hint { padding: 6px 8px; }
   }
 </style>
