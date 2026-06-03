@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/ui/Nav.astro';
+---
+
+<BaseLayout title="404 — Leni">
+  <Nav />
+
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-indigo"></div>
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-violet"></div>
+  </div>
+
+  <main class="main">
+    <div class="code animate-enter">404</div>
+    <div class="label animate-enter">page not found</div>
+    <h1 class="title animate-enter">Nothing here but the void.</h1>
+    <p class="desc animate-enter">
+      // the page you're looking for doesn't exist,<br />
+      // was moved, or never did.
+    </p>
+    <div class="actions animate-enter">
+      <a href="/" class="btn-primary">go home</a>
+      <a href="/posts" class="btn-secondary">read posts</a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .blobs {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob { position: absolute; border-radius: 50%; }
+
+  .blob-indigo {
+    width: 500px; height: 340px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.18) 0%, transparent 70%);
+    top: -80px; left: -100px;
+    filter: blur(48px);
+  }
+
+  .blob-pink {
+    width: 380px; height: 380px;
+    background: radial-gradient(ellipse, rgba(236,72,153,0.12) 0%, transparent 70%);
+    bottom: 0; right: -80px;
+    filter: blur(48px);
+  }
+
+  .blob-violet {
+    width: 300px; height: 220px;
+    background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
+    bottom: 60px; left: 35%;
+    filter: blur(36px);
+  }
+
+  .main {
+    position: relative;
+    z-index: 10;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 6rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .code {
+    font-size: clamp(5rem, 15vw, 8rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+
+  .code::after {
+    content: '404';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(139,92,246,0.4) 0%, rgba(236,72,153,0.3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: blur(16px);
+    z-index: -1;
+  }
+
+  .label {
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(167,139,250,0.7);
+    background: rgba(139,92,246,0.1);
+    border: 0.5px solid rgba(139,92,246,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  .title {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .desc {
+    font-size: 0.8125rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 2.5rem;
+    font-family: var(--font-mono);
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary, .btn-secondary {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 1.125rem;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.15s ease;
+  }
+
+  .btn-primary {
+    background: rgba(139,92,246,0.85);
+    color: rgba(255,255,255,0.95);
+    border: 0.5px solid rgba(167,139,250,0.4);
+  }
+
+  .btn-primary:hover { background: rgba(139,92,246,1); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.5);
+    border: 0.5px solid rgba(255,255,255,0.1);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.75);
+  }
+</style>

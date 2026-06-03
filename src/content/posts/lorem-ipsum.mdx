@@ -44,16 +44,15 @@ The vulnerability is straightforward: `strcpy` copies user-controlled input into
 
 Before writing an exploit, we map the target's mitigations:
 
-```bash
-$ checksec --file=./vuln
-    Arch:     amd64-64-little
-    RELRO:    Partial RELRO
-    Stack:    No canary found
-    NX:       NX enabled
-    PIE:      No PIE (0x400000)
-    ASLR:     enabled (system-wide)
-```
-
+<Terminal filename="">
+    <div><span class="prompt">$ </span><span class="cmd">checksec --file=./vuln</span></div>
+    <div><span class="out">Arch:     amd64-64-little</span></div>
+    <div><span class="out">RELRO:    Partial RELRO</span></div>
+    <div><span class="out">Stack:    No canary found</span></div>
+    <div><span class="out">NX:       NX enabled</span></div>
+    <div><span class="out">PIE:      No PIE (0x400000)</span></div>
+    <div><span class="out">ASLR:     enabled (system-wide)</span></div>
+</Terminal>
 No stack canary and no PIE simplifies things significantly. NX is enabled — the stack is not executable — so we cannot inject shellcode directly. ASLR randomises the stack and heap, but not the binary itself (no PIE). This makes **ret2libc** or **ROP** a natural approach.
 
 ---

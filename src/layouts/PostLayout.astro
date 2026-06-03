@@ -34,7 +34,7 @@ const isFeatured = severity === 'critical' || severity === 'high';
   </div>
 
   <main class="main">
-    <header class={`post-header${isFeatured ? ' post-header--featured' : ''}`}>
+    <header class={`post-header animate-enter${isFeatured ? ' post-header--featured' : ''}`}>
       <div class="header-top">
         <a href="/posts" class="back">← posts</a>
         <div class="header-meta">{formatDate(publishDate)} · {rt} min read</div>
@@ -56,7 +56,7 @@ const isFeatured = severity === 'critical' || severity === 'high';
       <p class="post-description">{description}</p>
     </header>
 
-    <div class="prose">
+    <div class="prose animate-enter">
       <slot />
     </div>
   </main>
@@ -275,5 +275,9 @@ const isFeatured = severity === 'critical' || severity === 'high';
     padding: 0;
     font-size: inherit;
     color: inherit;
+  }
+
+  :global(footer.footer) {
+    max-width: 720px;
   }
 </style>

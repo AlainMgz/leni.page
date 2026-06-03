@@ -1,0 +1,59 @@
+---
+import katex from 'katex';
+
+interface Props {
+  block?: boolean;
+  expr?: string;
+}
+
+const { block = false, expr } = Astro.props as Props;
+
+let source = expr ?? '';
+
+if (!expr) {
+    const raw = await Astro.slots.render('default');
+    source = raw.replace(/<[^>]*>/g, '').trim();
+}
+
+const rendered = katex.renderToString(source, {
+  throwOnError: false,
+  displayMode: block,
+});
+---
+
+{block ? (
+  <div class="math-block" set:html={rendered} />
+) : (
+  <span class="math-inline" set:html={rendered} />
+)}
+
+<link
+  rel="stylesheet"
+  href="/katex.min.css"
+/>
+
+<style>
+  .math-block {
+    overflow-x: auto;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .math-inline {
+    display: inline;
+  }
+
+  .math-block :global(.katex),
+  .math-inline :global(.katex) {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.05em;
+  }
+
+  .math-block :global(.katex-display) {
+    margin: 0;
+  }
+</style>

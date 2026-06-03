@@ -1,6 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
+import Terminal from '../../components/ui/Terminal.astro';
+import Callout from '../../components/ui/Callout.astro';
+import CVECard from '../../components/ui/CVECard.astro';
+import ThreatBadge from '../../components/ui/ThreatBadge.astro';
+import RedactedText from '../../components/ui/RedactedText.astro';
+import Diff from '../../components/ui/Diff.astro';
+import Ghidra from '../../components/ui/Ghidra.astro';
+import Oscilloscope from '../../components/ui/Oscilloscope.astro';
+import Math from '../../components/ui/Math.astro';
 import { render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -24,5 +33,17 @@ const { Content } = await render(post);
   cve={post.data.cve}
   body={post.body ?? ''}
 >
-  <Content />
+<Content
+  components={{
+    Terminal,
+    Callout,
+    CVECard,
+    ThreatBadge,
+    RedactedText,
+    Diff,
+    Ghidra,
+    Oscilloscope,
+    Math,
+  }}
+/>
 </PostLayout>

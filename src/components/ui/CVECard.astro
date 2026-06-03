@@ -1,0 +1,88 @@
+---
+interface Props {
+  id: string;
+  description: string;
+  score?: number;
+}
+
+const { id, description, score } = Astro.props as Props;
+const nvdUrl = `https://nvd.nist.gov/vuln/detail/${id}`;
+---
+
+<a href={nvdUrl} target="_blank" rel="noopener noreferrer" class="cve-card">
+  <div class="cve-left">
+    <div class="cve-id">{id}</div>
+    <div class="cve-desc">{description}</div>
+  </div>
+  {score && (
+    <div class="cve-right">
+      <div class="cve-score">
+        {score}<span>/10</span>
+      </div>
+      <div class="cve-link">NVD →</div>
+    </div>
+  )}
+</a>
+
+<style>
+  .cve-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: rgba(239,68,68,0.05);
+    border: 0.5px solid rgba(239,68,68,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin: 1.5rem 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cve-card:hover {
+    background: rgba(239,68,68,0.09);
+    border-color: rgba(239,68,68,0.35);
+  }
+
+  .cve-left { flex: 1; min-width: 0; }
+
+  .cve-id {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: rgba(252,165,165,0.9);
+    font-family: var(--font-mono);
+    margin-bottom: 3px;
+  }
+
+  .cve-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+
+  .cve-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .cve-score {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: rgba(239,68,68,0.9);
+  }
+
+  .cve-score span {
+    font-size: 0.625rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .cve-link {
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: rgba(252,165,165,0.6);
+    letter-spacing: 0.04em;
+  }
+</style>

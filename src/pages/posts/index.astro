@@ -37,7 +37,7 @@ function formatDate(date: Date): string {
   </div>
 
   <main class="main">
-    <section class="page-header">
+    <section class="page-header animate-enter">
       <div class="eyebrow">
         <span class="eyebrow-dot"></span>
         writing
@@ -49,7 +49,7 @@ function formatDate(date: Date): string {
     <div class="posts" id="posts-list">
       {posts.map((post, i) => (
         <article
-          class={`post-card${isFeatured(post.severity) ? ' post-card--featured' : ''}`}
+          class={`post-card animate-enter${isFeatured(post.severity) ? ' post-card--featured' : ''}`}
           data-index={i}
           style={i >= 10 ? 'display:none' : ''}
         >
