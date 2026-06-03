@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/ui/Nav.astro';
+import { getCollection } from 'astro:content';
+import { readTime } from '../../utils/readTime';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+
+const posts = allPosts
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .map(post => ({
+    slug: post.id,
+    title: post.data.title,
+    description: post.data.description,
+    publishDate: post.data.publishDate,
+    tags: post.data.tags,
+    severity: post.data.severity,
+    cve: post.data.cve,
+    readTime: readTime(post.body ?? ''),
+  }));
+
+const isFeatured = (severity?: string) =>
+  severity === 'critical' || severity === 'high';
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+---
+
+<BaseLayout title="Posts — Leni">
+  <Nav />
+
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-indigo"></div>
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-violet"></div>
+  </div>
+
+  <main class="main">
+    <section class="page-header animate-enter">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        writing
+      </div>
+      <h1 class="page-title">Posts</h1>
+      <div class="page-count">// {posts.length} {posts.length === 1 ? 'entry' : 'entries'}</div>
+    </section>
+
+    <div class="posts" id="posts-list">
+      {posts.map((post, i) => (
+        <article
+          class={`post-card animate-enter${isFeatured(post.severity) ? ' post-card--featured' : ''}`}
+          data-index={i}
+          style={i >= 10 ? 'display:none' : ''}
+        >
+          <a href={`/posts/${post.slug}`} class="post-link">
+            <div class="post-top">
+              <div class="post-tags">
+                {post.severity && (
+                  <span class={`tag tag-${post.severity}`}>{post.severity}</span>
+                )}
+                {post.cve && (
+                  <span class="tag tag-cve">{post.cve}</span>
+                )}
+                {post.tags.map(tag => (
+                  <span class="tag tag-default">{tag}</span>
+                ))}
+              </div>
+              <div class="post-meta">
+                {formatDate(post.publishDate)} · {post.readTime} min read
+              </div>
+            </div>
+            <h2 class="post-title">{post.title}</h2>
+            <p class="post-abstract">{post.description}</p>
+            <span class="read-more">read more →</span>
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div id="scroll-sentinel" style="height: 1px; margin-top: 2rem;"></div>
+  </main>
+</BaseLayout>
+
+<script>
+  const posts = document.querySelectorAll<HTMLElement>('#posts-list .post-card');
+  const sentinel = document.getElementById('scroll-sentinel');
+  const BATCH = 10;
+  let revealed = Math.min(BATCH, posts.length);
+
+  posts.forEach((p, i) => {
+    if (i < revealed) p.style.display = '';
+  });
+
+  if (!sentinel) throw new Error('sentinel not found');
+
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) return;
+    const next = Math.min(revealed + BATCH, posts.length);
+    for (let i = revealed; i < next; i++) {
+      posts[i].style.display = '';
+      posts[i].style.animation = 'fadeSlideIn 0.3s ease forwards';
+    }
+    revealed = next;
+    if (revealed >= posts.length) observer.disconnect();
+  }, { rootMargin: '200px' });
+
+  observer.observe(sentinel);
+</script>
+
+<style>
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .blobs {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob { position: absolute; border-radius: 50%; }
+
+  .blob-indigo {
+    width: 500px; height: 340px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.18) 0%, transparent 70%);
+    top: -80px; left: -100px;
+    filter: blur(48px);
+  }
+
+  .blob-pink {
+    width: 380px; height: 380px;
+    background: radial-gradient(ellipse, rgba(236,72,153,0.12) 0%, transparent 70%);
+    top: 100px; right: -80px;
+    filter: blur(48px);
+  }
+
+  .blob-violet {
+    width: 300px; height: 220px;
+    background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
+    bottom: 60px; left: 35%;
+    filter: blur(36px);
+  }
+
+  .main {
+    position: relative;
+    z-index: 10;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 1.75rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(167,139,250,0.8);
+    background: rgba(139,92,246,0.1);
+    border: 0.5px solid rgba(139,92,246,0.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .eyebrow-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(167,139,250,0.8);
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: rgba(255,255,255,0.92);
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+  }
+
+  .page-count {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    font-family: var(--font-mono);
+  }
+
+  .posts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .post-card {
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .post-card:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .post-card--featured {
+    border-color: rgba(239,68,68,0.2);
+    background: rgba(239,68,68,0.04);
+  }
+
+  .post-card--featured:hover {
+    background: rgba(239,68,68,0.07);
+    border-color: rgba(239,68,68,0.3);
+  }
+
+  .post-link {
+    display: block;
+    padding: 20px 22px;
+    text-decoration: none;
+  }
+
+  .post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .tag-critical  { background: rgba(239,68,68,0.12);  color: rgba(252,165,165,0.9); border: 0.5px solid rgba(239,68,68,0.25); }
+  .tag-high      { background: rgba(249,115,22,0.12); color: rgba(253,186,116,0.9); border: 0.5px solid rgba(249,115,22,0.25); }
+  .tag-medium    { background: rgba(234,179,8,0.12);  color: rgba(253,224,71,0.9);  border: 0.5px solid rgba(234,179,8,0.25); }
+  .tag-low       { background: rgba(34,197,94,0.12);  color: rgba(134,239,172,0.9); border: 0.5px solid rgba(34,197,94,0.25); }
+  .tag-info      { background: rgba(99,102,241,0.12); color: rgba(165,180,252,0.9); border: 0.5px solid rgba(99,102,241,0.25); }
+  .tag-cve       { background: rgba(239,68,68,0.08);  color: rgba(252,165,165,0.7); border: 0.5px solid rgba(239,68,68,0.2);  font-family: var(--font-mono); }
+  .tag-default   { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); border: 0.5px solid rgba(255,255,255,0.1); }
+
+  .post-meta {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.2);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .post-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: -0.01em;
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+
+  .post-abstract {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.35);
+    margin: 0 0 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .read-more {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: rgba(167,139,250,0.7);
+    letter-spacing: 0.02em;
+    transition: color 0.15s ease;
+  }
+
+  .post-card--featured .read-more { color: rgba(252,165,165,0.7); }
+  .post-card:hover .read-more { color: rgba(167,139,250,1); }
+  .post-card--featured:hover .read-more { color: rgba(252,165,165,1); }
+</style>

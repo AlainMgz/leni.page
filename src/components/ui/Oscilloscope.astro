@@ -1,0 +1,142 @@
+---
+interface Channel {
+  label: string;
+  color?: 'cyan' | 'violet' | 'red' | 'amber' | 'green';
+}
+
+interface Props {
+  title?: string;
+  sampleRate?: string;
+  window?: string;
+  trigger?: string;
+  channels?: Channel[];
+  src: string;
+  alt?: string;
+}
+
+const {
+  title = 'SIGNAL MONITOR',
+  sampleRate,
+  window: win,
+  trigger,
+  channels = [],
+  src,
+  alt = 'Oscilloscope signal trace',
+} = Astro.props as Props;
+
+const colorMap: Record<string, string> = {
+  cyan:   'rgba(0,245,255,0.8)',
+  violet: 'rgba(167,139,250,0.8)',
+  red:    'rgba(252,165,165,0.8)',
+  amber:  'rgba(253,186,116,0.8)',
+  green:  'rgba(134,239,172,0.8)',
+};
+---
+
+<div class="oscilloscope">
+  <div class="osc-bar">
+    <div class="osc-title">{title}</div>
+    {(sampleRate || win || trigger) && (
+      <div class="osc-meta">
+        {sampleRate && <div class="osc-stat">SAMPLE <span>{sampleRate}</span></div>}
+        {win        && <div class="osc-stat">WINDOW <span>{win}</span></div>}
+        {trigger    && <div class="osc-stat">TRIGGER <span>{trigger}</span></div>}
+      </div>
+    )}
+  </div>
+
+  <div class="osc-body">
+    <img src={src} alt={alt} class="osc-image" />
+  </div>
+
+  {channels.length > 0 && (
+    <div class="osc-footer">
+      {channels.map(ch => (
+        <div class="osc-legend">
+          <div
+            class="osc-legend-dot"
+            style={`background: ${colorMap[ch.color ?? 'cyan']}`}
+          ></div>
+          {ch.label}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .oscilloscope {
+    background: rgba(0,0,0,0.6);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .osc-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .osc-title {
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--font-mono);
+  }
+
+  .osc-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .osc-stat {
+    font-size: 0.5625rem;
+    font-family: var(--font-mono);
+    color: rgba(255,255,255,0.2);
+  }
+
+  .osc-stat span { color: rgba(134,239,172,0.8); }
+
+  .osc-body { padding: 12px; }
+
+  .osc-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+    border: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .osc-footer {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 8px 14px;
+    border-top: 0.5px solid rgba(255,255,255,0.05);
+  }
+
+  .osc-legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.5625rem;
+    color: rgba(255,255,255,0.2);
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+  }
+
+  .osc-legend-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>

@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import Searchbar from '../components/interactive/Searchbar';
+import { getCollection } from 'astro:content';
+import Footer from '../components/ui/Footer.astro';
 
 interface Props {
     title: string;
@@ -8,6 +11,14 @@ interface Props {
 
 const { title, description = 'Security research and technical writing.' } = Astro.props as Props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const postIndex = allPosts.map(p => ({
+  slug: p.id,
+  title: p.data.title,
+  tags: p.data.tags,
+  severity: p.data.severity,
+}));
 ---
 
 <!doctype html>
@@ -28,8 +39,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 
     <title>{title}</title>
+    <style>
+      .animate-enter { opacity: 0; }
+    </style>
   </head>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const elements = document.querySelectorAll('.animate-enter');
+      elements.forEach((el, i) => {
+        (el as HTMLElement).style.animationDelay = `${i * 60}ms`;
+      });
+    });
+  </script>
   <body>
+    <Searchbar client:load posts={postIndex} />
     <slot />
+    <Footer />
   </body>
 </html>

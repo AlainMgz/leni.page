@@ -1,21 +1,17 @@
 ---
 const navItems = [
-    { label: 'home', href: '/' },
-    { label: 'posts', href: '/posts' },
-    { label: 'contact', href: '/contact' },
+  { label: 'home', href: '/' },
+  { label: 'posts', href: '/posts' },
+  { label: 'contact', href: '/contact' },
 ];
 
 const currentPath = Astro.url.pathname;
 ---
 
 <nav class="nav">
-  <a href="/" class="nav-brand">
-    <span class="brand-bracket">[</span>
-    <span class="brand-name">leni</span>
-    <span class="brand-bracket">]</span>
-    <span class="brand-cursor">█</span>
+  <a href="/" class="brand">
+    leni<span class="brand-dot">.</span>
   </a>
-
   <ul class="nav-links">
     {navItems.map(item => (
       <li>
@@ -23,73 +19,97 @@ const currentPath = Astro.url.pathname;
           href={item.href}
           class={`nav-link ${currentPath === item.href ? 'nav-link--active' : ''}`}
         >
-          {currentPath === item.href ? `> ${item.label}` : item.label}
+          {item.label}
         </a>
       </li>
     ))}
   </ul>
+  <button class="search-hint" onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true}))" aria-label="Open search">
+    <span class="search-hint-label">search</span>
+    <kbd class="search-hint-kbd">ctrl K</kbd>
+  </button>
 </nav>
 
 <style>
   .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid var(--color-border);
-    position: sticky;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    z-index: 50;
+    padding: 1rem 1.75rem;
+    background: rgba(10,10,18,0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
   }
 
-  .nav-brand {
-    text-decoration: none;
-    font-size: 1.1rem;
+  .brand {
+    font-size: 1.5rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    letter-spacing: -0.01em;
   }
 
-  .brand-bracket {
-    color: var(--color-text-muted);
-  }
-
-  .brand-name {
-    color: var(--color-accent-cyan);
-  }
-
-  .brand-cursor {
-    color: var(--color-accent-cyan);
-    animation: blink 1.2s step-end infinite;
+  .brand-dot {
+    color: rgba(139,92,246,0.9);
   }
 
   .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .nav-link {
-    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
     text-decoration: none;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     transition: color 0.15s ease;
   }
 
   .nav-link:hover {
-    color: var(--color-accent-cyan);
+    color: rgba(255,255,255,0.75);
   }
 
   .nav-link--active {
-    color: var(--color-accent-cyan);
+    color: rgba(255,255,255,0.85);
   }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  .search-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .search-hint:hover { background: rgba(255,255,255,0.06); }
+
+  .search-hint-label {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    font-family: inherit;
+  }
+
+  .search-hint-kbd {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: inherit;
   }
 </style>

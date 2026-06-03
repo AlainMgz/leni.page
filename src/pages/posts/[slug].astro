@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+import Terminal from '../../components/ui/Terminal.astro';
+import Callout from '../../components/ui/Callout.astro';
+import CVECard from '../../components/ui/CVECard.astro';
+import ThreatBadge from '../../components/ui/ThreatBadge.astro';
+import RedactedText from '../../components/ui/RedactedText.astro';
+import Diff from '../../components/ui/Diff.astro';
+import Ghidra from '../../components/ui/Ghidra.astro';
+import Oscilloscope from '../../components/ui/Oscilloscope.astro';
+import Math from '../../components/ui/Math.astro';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<PostLayout
+  title={post.data.title}
+  description={post.data.description}
+  publishDate={post.data.publishDate}
+  tags={post.data.tags}
+  severity={post.data.severity}
+  cve={post.data.cve}
+  body={post.body ?? ''}
+>
+<Content
+  components={{
+    Terminal,
+    Callout,
+    CVECard,
+    ThreatBadge,
+    RedactedText,
+    Diff,
+    Ghidra,
+    Oscilloscope,
+    Math,
+  }}
+/>
+</PostLayout>

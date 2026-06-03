@@ -1,0 +1,40 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span class="copy">© {year} Alain Magazin</span>
+  <a href="https://github.com/AlainMgz/leni.page" target="_blank" rel="noopener noreferrer" class="repo">
+    source on GitHub →
+  </a>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 1.5rem 1.75rem;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .copy {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.4);
+    font-family: var(--font-mono);
+  }
+
+  .repo {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    transition: color 0.15s ease;
+  }
+
+  .repo:hover { color: rgba(167,139,250,0.8); }
+</style>

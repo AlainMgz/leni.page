@@ -1,0 +1,93 @@
+---
+interface Props {
+  listing?: string;
+  decompile?: string;
+  func?: string;
+}
+
+const { listing, decompile, func } = Astro.props as Props;
+---
+
+<div class="ghidra">
+  <div class="ghidra-panels">
+    <div class="ghidra-panel">
+      <div class="ghidra-panel-header">
+        listing{func ? ` — ${func}` : ''}
+      </div>
+      <div class="ghidra-body ghidra-listing">
+        <slot name="listing" />
+      </div>
+    </div>
+    <div class="ghidra-panel">
+      <div class="ghidra-panel-header">
+        decompile{func ? ` — ${func}` : ''}
+      </div>
+      <div class="ghidra-body ghidra-decompile">
+        <slot name="decompile" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ghidra {
+    background: rgba(0,0,0,0.5);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .ghidra-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 640px) {
+    .ghidra-panels {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ghidra-panel:first-child {
+    border-right: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .ghidra-panel-header {
+    padding: 7px 14px;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.02);
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+    font-family: var(--font-mono);
+  }
+
+  .ghidra-body {
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+
+  /* Listing slot styling */
+  .ghidra-listing :global(.addr) { color: rgba(255,255,255,0.18); margin-right: 12px; }
+  .ghidra-listing :global(.mnem) { color: rgba(99,179,237,0.85);  margin-right: 8px; }
+  .ghidra-listing :global(.reg)  { color: rgba(252,165,165,0.8); }
+  .ghidra-listing :global(.imm)  { color: rgba(134,239,172,0.8); }
+  .ghidra-listing :global(.ref)  { color: rgba(253,186,116,0.7); }
+  .ghidra-listing :global(.cmt)  { color: rgba(255,255,255,0.18); font-style: italic; margin-left: 8px; }
+  .ghidra-listing :global(.hl)   { display: block; background: rgba(139,92,246,0.1); margin: 0 -14px; padding: 0 14px; }
+
+  /* Decompile slot styling */
+  .ghidra-decompile :global(.kw)   { color: rgba(199,146,234,0.85); }
+  .ghidra-decompile :global(.type) { color: rgba(99,179,237,0.85); }
+  .ghidra-decompile :global(.fn)   { color: rgba(130,213,255,0.85); }
+  .ghidra-decompile :global(.var)  { color: rgba(255,255,255,0.7); }
+  .ghidra-decompile :global(.num)  { color: rgba(134,239,172,0.8); }
+  .ghidra-decompile :global(.str)  { color: rgba(195,232,141,0.8); }
+  .ghidra-decompile :global(.cmt)  { color: rgba(255,255,255,0.18); font-style: italic; }
+</style>

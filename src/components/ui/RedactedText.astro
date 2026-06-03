@@ -1,0 +1,19 @@
+<span class="redacted" title="hover to reveal"><slot /></span>
+
+<style>
+  .redacted {
+    background: rgba(255,255,255,0.85);
+    color: transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    padding: 0 3px;
+  }
+
+  .redacted:hover {
+    background: rgba(139,92,246,0.15);
+    color: rgba(167,139,250,0.95);
+    user-select: text;
+  }
+</style>

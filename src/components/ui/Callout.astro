@@ -1,0 +1,62 @@
+---
+interface Props {
+  type?: 'info' | 'warning' | 'critical';
+  title?: string;
+}
+
+const { type = 'info', title } = Astro.props as Props;
+
+const icons = { info: 'ℹ', warning: '⚠', critical: '!' };
+const defaultTitles = { info: 'Note', warning: 'Warning', critical: 'Critical' };
+const icon = icons[type];
+const label = title ?? defaultTitles[type];
+---
+
+<div class={`callout callout-${type}`}>
+  <div class="callout-icon">{icon}</div>
+  <div class="callout-content">
+    <div class="callout-title">{label}</div>
+    <div class="callout-text"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .callout {
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 1.5rem 0;
+  }
+
+  .callout-info     { background: rgba(99,102,241,0.08);  border: 0.5px solid rgba(99,102,241,0.2); }
+  .callout-warning  { background: rgba(245,158,11,0.08);  border: 0.5px solid rgba(245,158,11,0.2); }
+  .callout-critical { background: rgba(239,68,68,0.08);   border: 0.5px solid rgba(239,68,68,0.2); }
+
+  .callout-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .callout-info .callout-icon     { color: rgba(165,180,252,0.8); }
+  .callout-warning .callout-icon  { color: rgba(253,186,116,0.8); }
+  .callout-critical .callout-icon { color: rgba(252,165,165,0.8); }
+
+  .callout-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .callout-info .callout-title     { color: rgba(165,180,252,0.9); }
+  .callout-warning .callout-title  { color: rgba(253,186,116,0.9); }
+  .callout-critical .callout-title { color: rgba(252,165,165,0.9); }
+
+  .callout-text {
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.5);
+  }
+</style>

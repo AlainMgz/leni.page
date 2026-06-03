@@ -1,0 +1,50 @@
+---
+interface Props {
+  filename?: string;
+}
+const { filename } = Astro.props as Props;
+---
+
+<div class="diff">
+  {filename && (
+    <div class="diff-bar">{filename}</div>
+  )}
+  <div class="diff-body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .diff {
+    background: rgba(0,0,0,0.4);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    margin: 1.5rem 0;
+  }
+
+  .diff-bar {
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    font-size: 0.625rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .diff-body { padding: 10px 0; }
+
+  .diff :global(.r) { display: flex; padding: 1px 16px; gap: 12px; background: rgba(239,68,68,0.08); }
+  .diff :global(.a) { display: flex; padding: 1px 16px; gap: 12px; background: rgba(34,197,94,0.08); }
+  .diff :global(.n) { display: flex; padding: 1px 16px; gap: 12px; }
+
+  .diff :global(.r::before) { content: '-'; color: rgba(239,68,68,0.7);  font-weight: 700; flex-shrink: 0; width: 12px; }
+  .diff :global(.a::before) { content: '+'; color: rgba(34,197,94,0.7);  font-weight: 700; flex-shrink: 0; width: 12px; }
+  .diff :global(.n::before) { content: ' '; flex-shrink: 0; width: 12px; }
+
+  .diff :global(.r) { color: rgba(252,165,165,0.7); }
+  .diff :global(.a) { color: rgba(134,239,172,0.7); }
+  .diff :global(.n) { color: rgba(255,255,255,0.35); }
+</style>

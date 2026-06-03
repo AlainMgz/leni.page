@@ -33,3 +33,6 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 .env.development
+
+# Dev notes
+Components.md

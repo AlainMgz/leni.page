@@ -1,32 +1,265 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Nav from "../components/ui/Nav.astro";
+import IconMail from '../components/icons/IconMail.astro';
+import IconX from '../components/icons/IconX.astro';
+import IconMastodon from '../components/icons/IconMastodon.astro';
+import IconGithub from '../components/icons/IconGithub.astro';
+import IconLinkedin from '../components/icons/IconLinkedin.astro';
 ---
 
 <BaseLayout title="Contact — Leni">
   <Nav />
 
+  <div class="blobs" aria-hidden="true">
+    <div class="blob blob-indigo"></div>
+    <div class="blob blob-pink"></div>
+    <div class="blob blob-violet"></div>
+  </div>
+
   <main class="main">
-    <h1>Contact</h1>
-    <p>
-        For important matters, please contact me via email at <a href="mailto:leni@leni.page">leni@leni.page</a>.<br>
-        Otherwise, you can find me on the following platforms:
-        <ul>
-            <li>
-                <a href="https://x.com/7bb14d43" target="_blank">Twitter/X</a>
-            </li>
-            <!--
-            <li>
-              <a href="https://mastodon.social/@7bb14d43" target="_blank">Mastodon</a>
-            </li>
-            -->
-            <li>
-                <a href="https://github.com/AlainMgz" target="_blank">GitHub</a>
-            </li>
-            <li>
-              <a href="https://linkedin.com/in/alain.magazin" target="_blank">LinkedIn</a>
-            </li>
-        </ul>
-    </p>
+    <section class="header animate-enter">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        get in touch
+      </div>
+      <h1 class="title">Contact</h1>
+      <p class="subtitle">
+        For important matters, reach me directly by email.
+        Otherwise, find me on the platforms below.
+      </p>
+    </section>
+
+    <section class="cards animate-enter">
+      <a href="mailto:leni@leni.page" class="card card--primary animate-enter">
+        <div class="card-icon"><IconMail size={18} /></div>
+        <div class="card-text">
+          <div class="card-label">Email</div>
+          <div class="card-value">leni@leni.page</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+      <a href="https://x.com/7bb14d43" target="_blank" rel="noopener noreferrer" class="card animate-enter">
+        <div class="card-icon"><IconX size={18} /></div>
+        <div class="card-text">
+          <div class="card-label">Twitter / X</div>
+          <div class="card-value">@7bb14d43</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+      
+      <a href="https://mastodon.social/@7bb14d43" target="_blank" rel="noopener noreferrer" class="card animate-enter">
+        <div class="card-icon"><IconMastodon size={18} /></div>
+        <div class="card-text">
+          <div class="card-label">Mastodon</div>
+          <div class="card-value">@7bb14d43@mastodon.social</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+      
+      <a href="https://github.com/AlainMgz" target="_blank" rel="noopener noreferrer" class="card animate-enter">
+        <div class="card-icon"><IconGithub size={18} /></div>
+        <div class="card-text">
+          <div class="card-label">Github</div>
+          <div class="card-value">AlainMgz</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+      
+      <a href="https://linkedin.com/in/alain.magazin" target="_blank" rel="noopener noreferrer" class="card animate-enter">
+        <div class="card-icon"><IconLinkedin size={18} /></div>
+        <div class="card-text">
+          <div class="card-label">Linkedin</div>
+          <div class="card-value">alain.magazin</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
   </main>
 </BaseLayout>
+
+<style>
+  .blobs {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .blob-indigo {
+    width: 500px; height: 340px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.18) 0%, transparent 70%);
+    top: -80px; left: -100px;
+    filter: blur(48px);
+  }
+
+  .blob-pink {
+    width: 380px; height: 380px;
+    background: radial-gradient(ellipse, rgba(236,72,153,0.12) 0%, transparent 70%);
+    top: 100px; right: -80px;
+    filter: blur(48px);
+  }
+
+  .blob-violet {
+    width: 300px; height: 220px;
+    background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
+    bottom: 60px; left: 35%;
+    filter: blur(36px);
+  }
+
+  .main {
+    position: relative;
+    z-index: 10;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 1.75rem;
+  }
+
+  .header {
+    padding-bottom: 3rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(167,139,250,0.8);
+    background: rgba(139,92,246,0.1);
+    border: 0.5px solid rgba(139,92,246,0.25);
+    border-radius: 20px;
+    padding: 4px 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(167,139,250,0.8);
+    flex-shrink: 0;
+  }
+
+  .title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: rgba(255,255,255,0.92);
+    margin: 0 0 1rem;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.4);
+    max-width: 480px;
+    margin: 0;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    text-decoration: none;
+    backdrop-filter: blur(8px);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .card:hover {
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .card--primary {
+    border-color: rgba(139,92,246,0.25);
+    background: rgba(139,92,246,0.06);
+  }
+
+  .card--primary:hover {
+    background: rgba(139,92,246,0.1);
+    border-color: rgba(139,92,246,0.4);
+  }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.5);
+  }
+
+  .card--primary .card-icon {
+    background: rgba(139,92,246,0.15);
+    border-color: rgba(139,92,246,0.3);
+    color: rgba(167,139,250,0.9);
+  }
+
+  .card-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 2px;
+  }
+
+  .card--primary .card-label {
+    color: rgba(167,139,250,0.9);
+  }
+
+  .card-value {
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-mono);
+  }
+
+  .card-arrow {
+    font-size: 14px;
+    color: rgba(255,255,255,0.12);
+    transition: color 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .card:hover .card-arrow {
+    color: rgba(255,255,255,0.4);
+    transform: translateX(3px);
+  }
+
+  .card--primary .card-arrow {
+    color: rgba(139,92,246,0.4);
+  }
+
+  .card--primary:hover .card-arrow {
+    color: rgba(167,139,250,0.8);
+    transform: translateX(3px);
+  }
+</style>
