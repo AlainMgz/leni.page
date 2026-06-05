@@ -24,7 +24,14 @@ function formatDate(date: Date): string {
 const isFeatured = severity === 'critical' || severity === 'high';
 ---
 
-<BaseLayout title={`${title} — Leni`} description={description}>
+<BaseLayout
+  title={`${title} — Leni`}
+  description={description}
+  ogType="article"
+  publishDate={publishDate}
+  tags={tags}
+  author="Alain Alen Magazin (Leni)"
+>
   <Nav />
 
   <div class="blobs" aria-hidden="true">
