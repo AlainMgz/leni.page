@@ -28,6 +28,7 @@ const isFeatured = severity === 'critical' || severity === 'high';
   title={`${title} — Leni`}
   description={description}
   ogType="article"
+  ogImage={`/og/${Astro.url.pathname.split('/').filter(Boolean).pop()}.png`}
   publishDate={publishDate}
   tags={tags}
   author="Alain Alen Magazin (Leni)"

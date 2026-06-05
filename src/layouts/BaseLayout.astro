@@ -35,7 +35,7 @@ const canonicalHref = canonicalURL.href.endsWith('/')
 
 const ogImageURL = ogImage
   ? new URL(ogImage, Astro.site).href
-  : new URL('/og-default.png', Astro.site).href;
+  : new URL('/og/default.png', Astro.site).href;
 
 const allPosts = await getCollection('posts', ({ data }) => !data.draft);
 const postIndex = allPosts.map(p => ({
