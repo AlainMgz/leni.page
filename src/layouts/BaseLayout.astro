@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Searchbar from '../components/interactive/Searchbar';
 import { getCollection } from 'astro:content';
 import Footer from '../components/ui/Footer.astro';
+import CursorFX from '../components/interactive/CursorFX';
 
 interface Props {
   title: string;
@@ -150,7 +151,8 @@ const articleJsonLd = ogType === 'article' && publishDate ? {
         });
       });
     </script>
-    <Searchbar client:load posts={postIndex} />
+        <Searchbar client:load posts={postIndex} />
+        <CursorFX client:idle />
     <slot />
     <Footer />
   </body>
