@@ -104,3 +104,26 @@ body {
     opacity: 1;
   }
 }
+
+[id] {
+    scroll-margin-top: 5.5rem;
+}
+
+.prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  background: #191724;
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.prompt-sign {
+  color: rgba(139,92,246,0.8);
+}
