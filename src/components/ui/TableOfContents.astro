@@ -1,0 +1,110 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props as Props;
+const filtered = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+
+{filtered.length > 0 && (
+  <nav class="toc" aria-label="Table of contents">
+    <ul class="toc-list">
+      {filtered.map(h => (
+        <li class={`toc-item toc-depth-${h.depth}`}>
+          <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+      .toc {
+          display: block;
+          position: sticky;
+          top: 8rem;
+          width: 200px;
+          flex-shrink: 0;
+      }
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    border-left: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .toc-link {
+    display: block;
+    font-size: 0.73rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    line-height: 1.5;
+    transition: color 0.15s ease;
+    padding: 2px 0 2px 12px;
+  }
+
+  .toc-link:hover { color: rgba(255,255,255,0.7); }
+
+  .toc-item.toc-depth-3 .toc-link {
+    padding-left: 22px;
+    font-size: 0.625rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .toc-item.toc-depth-3 .toc-link:hover { color: rgba(255,255,255,0.5); }
+
+  .toc-link.active {
+    color: rgba(167,139,250,0.9);
+    border-left: 1.5px solid rgba(139,92,246,0.7);
+    margin-left: -1px;
+  }
+</style>
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
+
+  const headings = Array.from(links).map(l => {
+    const id = l.getAttribute('href')?.slice(1);
+    return { link: l, el: id ? document.getElementById(id) : null };
+  }).filter(h => h.el !== null);
+
+  function updateActive() {
+      const scrollY = window.scrollY + 120;
+      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+
+      let active = headings[0];
+
+      if (atBottom) {
+          active = headings[headings.length - 1];
+      } else {
+          for (const h of headings) {
+              if (!h.el) continue;
+              if (h.el.getBoundingClientRect().top + window.scrollY <= scrollY) {
+                  active = h;
+              }
+          }
+      }
+
+      links.forEach(l => l.classList.remove('active'));
+      active?.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+
