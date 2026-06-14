@@ -143,16 +143,9 @@ const articleJsonLd = ogType === 'article' && publishDate ? {
     </style>
   </head>
   <body>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const elements = document.querySelectorAll('.animate-enter');
-        elements.forEach((el, i) => {
-          (el as HTMLElement).style.animationDelay = `${i * 60}ms`;
-        });
-      });
-    </script>
-        <Searchbar client:load posts={postIndex} />
-        <CursorFX client:idle />
+    <script src="/src/js/BaseLayout.ts"></script>
+    <Searchbar client:load posts={postIndex} />
+    <CursorFX client:idle />
     <slot />
     <Footer />
   </body>
