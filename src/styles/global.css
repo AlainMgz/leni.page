@@ -127,3 +127,10 @@ body {
 .prompt-sign {
   color: rgba(139,92,246,0.8);
 }
+
+.cursor-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+}

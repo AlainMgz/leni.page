@@ -138,15 +138,13 @@ const articleJsonLd = ogType === 'article' && publishDate ? {
       : <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
     }
 
-    <style>
-      .animate-enter { opacity: 0; }
-    </style>
+  <script src="/src/js/BaseLayout.ts"></script>
   </head>
   <body>
-    <script src="/src/js/BaseLayout.ts"></script>
     <Searchbar client:load posts={postIndex} />
     <CursorFX client:idle />
     <slot />
     <Footer />
   </body>
 </html>
+

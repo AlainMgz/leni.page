@@ -25,12 +25,13 @@ for (const file of getAllHtmlFiles('./dist')) {
 }
 
 const csp = [
-  `default-src 'self'`,
+  `default-src 'none'`,
   `script-src 'self' ${[...hashes].join(' ')}`,
   `style-src 'self'`,
+  `style-src-attr 'none'`,
   `img-src 'self' data:`,
   `font-src 'self'`,
-  `connect-src 'none'`,
+  `connect-src 'self'`,
   `frame-ancestors 'none'`,
   `base-uri 'self'`,
   `form-action 'none'`,
