@@ -138,15 +138,7 @@ const articleJsonLd = ogType === 'article' && publishDate ? {
       : <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
     }
 
-    <script src="/src/js/BaseLayout.ts"></script>
-    <style>
-        .cursor-canvas {
-            position: 'fixed',
-            inset: 0,
-            pointerEvents: 'none',
-            zIndex: 9999,
-        }  
-    </style>
+  <script src="/src/js/BaseLayout.ts"></script>
   </head>
   <body>
     <Searchbar client:load posts={postIndex} />
