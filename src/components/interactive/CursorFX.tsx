@@ -102,12 +102,7 @@ export default function CursorFX() {
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 9999,
-      }}
+      className="cursor-canvas"
     />
   );
 }

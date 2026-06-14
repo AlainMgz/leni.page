@@ -9,6 +9,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <nav class="nav">
+  <script src="/src/js/Nav.ts"></script>
   <a href="/" class="brand">
     leni<span class="brand-dot">.</span>
   </a>
@@ -27,8 +28,7 @@ const currentPath = Astro.url.pathname;
   </ul>
 
   <div class="nav-right">
-    <button class="search-hint" aria-label="Open search"
-      onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))">
+      <button class="search-hint" aria-label="Open search" id="search-trigger">
       <span class="search-hint-label">search</span>
       <kbd class="search-hint-kbd">ctrl K</kbd>
     </button>
@@ -56,7 +56,7 @@ const currentPath = Astro.url.pathname;
   <button
     class="mobile-search"
     aria-label="Open search"
-    onclick="window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true })); document.getElementById('mobile-menu').classList.remove('mobile-menu--open'); document.getElementById('hamburger').setAttribute('aria-expanded', 'false');"
+    id="mobile-search-trigger"
   >
     <span>search</span>
     <kbd>ctrl K</kbd>

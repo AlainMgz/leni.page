@@ -26,11 +26,12 @@ for (const file of getAllHtmlFiles('./dist')) {
 
 const csp = [
   `default-src 'self'`,
-  `script-src 'self' ${[...hashes].join(' ')}`,
+  `script-src 'self' https://static.cloudflareinsights.com ${[...hashes].join(' ')}`,
   `style-src 'self'`,
+  `style-src-attr 'none'`,
   `img-src 'self' data:`,
   `font-src 'self'`,
-  `connect-src 'none'`,
+  `connect-src 'self' https://static.cloudflareinsights.com`,
   `frame-ancestors 'none'`,
   `base-uri 'self'`,
   `form-action 'none'`,
