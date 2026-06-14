@@ -25,7 +25,7 @@ for (const file of getAllHtmlFiles('./dist')) {
 }
 
 const csp = [
-  `default-src 'self'`,
+  `default-src 'none'`,
   `script-src 'self' ${[...hashes].join(' ')}`,
   `style-src 'self'`,
   `style-src-attr 'none'`,
