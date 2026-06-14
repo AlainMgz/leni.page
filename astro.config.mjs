@@ -23,6 +23,9 @@ export default defineConfig({
   ],
 
   vite: {
+    build: {
+        cssCodeSplit: false,
+    },
     plugins: [tailwindcss()]
-  }
+  },
 });
