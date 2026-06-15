@@ -55,7 +55,7 @@ const colorMap: Record<string, string> = {
         <div class="osc-legend">
           <div
             class="osc-legend-dot"
-            style={`background: ${colorMap[ch.color ?? 'cyan']}`}
+            osc-legend-dot--${ch.color ?? 'cyan'}
           ></div>
           {ch.label}
         </div>
@@ -139,4 +139,10 @@ const colorMap: Record<string, string> = {
     border-radius: 50%;
     flex-shrink: 0;
   }
+
+  .osc-legend-dot--cyan   { background: rgba(0,245,255,0.8); }
+  .osc-legend-dot--violet { background: rgba(167,139,250,0.8); }
+  .osc-legend-dot--red    { background: rgba(252,165,165,0.8); }
+  .osc-legend-dot--amber  { background: rgba(253,186,116,0.8); }
+  .osc-legend-dot--green  { background: rgba(134,239,172,0.8); }
 </style>

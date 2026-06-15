@@ -7,6 +7,8 @@ severity: "high"
 draft: false
 ---
 
+import { Tooltip } from '/src/components/ui/Tooltip';
+
 ## Introduction
 
 Stack buffer overflows are one of the oldest vulnerability classes in software security, yet they remain relevant in 2026 — particularly in legacy codebases, embedded systems, and poorly audited C libraries. Modern mitigations such as ASLR, NX/DEP, and stack canaries raise the bar considerably, but they are not insurmountable.
@@ -17,7 +19,7 @@ In this post, we walk through the full exploitation lifecycle of a contrived but
 
 ## The Vulnerable Program
 
-Consider the following C program:
+Consider the following <Tooltip client:load content="C is a programming language"><b><i>C</i></b></Tooltip> program:
 
 ```c
 #include <stdio.h>
