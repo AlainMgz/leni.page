@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Nav from '../components/ui/Nav.astro';
+import { TracingBeam } from '../components/ui/TracingBeam.tsx';
+import TableOfContents from '../components/ui/TableOfContents.astro';
 import { readTime } from '../utils/readTime';
 
 interface Props {
@@ -11,9 +13,10 @@ interface Props {
   severity?: string;
   cve?: string;
   body: string;
+  headings: { depth: number; slug: string; text: string; }[];
 }
 
-const { title, description, publishDate, tags, severity, cve, body } = Astro.props as Props;
+const { title, description, publishDate, tags, severity, cve, body, headings } = Astro.props as Props;
 
 const rt = readTime(body);
 
@@ -24,76 +27,52 @@ function formatDate(date: Date): string {
 const isFeatured = severity === 'critical' || severity === 'high';
 ---
 
-<BaseLayout title={`${title} — Leni`} description={description}>
+<BaseLayout
+  title={`${title} — Leni`}
+  description={description}
+  ogType="article"
+  ogImage={`/og/${Astro.url.pathname.split('/').filter(Boolean).pop()}.png`}
+  publishDate={publishDate}
+  tags={tags}
+  author="Alain Alen Magazin (Leni)"
+>
   <Nav />
+    <div class="post-layout">
+      <TableOfContents headings={headings} />
+      <main class="main">
+          <TracingBeam client:load>
+          <header class={`post-header animate-enter${isFeatured ? ' post-header--featured' : ''}`}>
+              <div class="header-top">
+                  <a href="/posts" class="back">← posts</a>
+                  <div class="header-meta">{formatDate(publishDate)} · {rt} min read</div>
+              </div>
 
-  <div class="blobs" aria-hidden="true">
-    <div class="blob blob-indigo"></div>
-    <div class="blob blob-pink"></div>
-    <div class="blob blob-violet"></div>
+              <div class="header-tags">
+                  {severity && (
+                  <span class={`tag tag-${severity}`}>{severity}</span>
+                  )}
+                  {cve && (
+                  <span class="tag tag-cve">{cve}</span>
+                  )}
+                  {tags.map(tag => (
+                  <span class="tag tag-default">{tag}</span>
+                  ))}
+              </div>
+
+              <h1 class="post-title">{title}</h1>
+              <p class="post-description">{description}</p>
+          </header>
+
+          <div class="prose animate-enter">
+              <slot />
+          </div>
+          </TracingBeam>
+      </main>
   </div>
 
-  <main class="main">
-    <header class={`post-header animate-enter${isFeatured ? ' post-header--featured' : ''}`}>
-      <div class="header-top">
-        <a href="/posts" class="back">← posts</a>
-        <div class="header-meta">{formatDate(publishDate)} · {rt} min read</div>
-      </div>
-
-      <div class="header-tags">
-        {severity && (
-          <span class={`tag tag-${severity}`}>{severity}</span>
-        )}
-        {cve && (
-          <span class="tag tag-cve">{cve}</span>
-        )}
-        {tags.map(tag => (
-          <span class="tag tag-default">{tag}</span>
-        ))}
-      </div>
-
-      <h1 class="post-title">{title}</h1>
-      <p class="post-description">{description}</p>
-    </header>
-
-    <div class="prose animate-enter">
-      <slot />
-    </div>
-  </main>
 </BaseLayout>
 
 <style>
-  .blobs {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .blob { position: absolute; border-radius: 50%; }
-
-  .blob-indigo {
-    width: 500px; height: 340px;
-    background: radial-gradient(ellipse, rgba(99,102,241,0.18) 0%, transparent 70%);
-    top: -80px; left: -100px;
-    filter: blur(48px);
-  }
-
-  .blob-pink {
-    width: 380px; height: 380px;
-    background: radial-gradient(ellipse, rgba(236,72,153,0.12) 0%, transparent 70%);
-    top: 100px; right: -80px;
-    filter: blur(48px);
-  }
-
-  .blob-violet {
-    width: 300px; height: 220px;
-    background: radial-gradient(ellipse, rgba(139,92,246,0.1) 0%, transparent 70%);
-    bottom: 60px; left: 35%;
-    filter: blur(36px);
-  }
-
   .main {
     position: relative;
     z-index: 10;
@@ -106,10 +85,11 @@ const isFeatured = severity === 'critical' || severity === 'high';
     padding-bottom: 2.5rem;
     border-bottom: 0.5px solid rgba(255,255,255,0.06);
     margin-bottom: 3rem;
+    max-width: 580px;
   }
 
   .post-header--featured {
-    border-bottom-color: rgba(239,68,68,0.15);
+      border-bottom-color: rgba(239,68,68,0.15);
   }
 
   .header-top {
@@ -181,6 +161,7 @@ const isFeatured = severity === 'critical' || severity === 'high';
     color: rgba(255,255,255,0.75);
     font-size: 0.9375rem;
     line-height: 1.8;
+    max-width: 580px;
   }
 
   .prose :global(h2) {
@@ -279,5 +260,22 @@ const isFeatured = severity === 'critical' || severity === 'high';
 
   :global(footer.footer) {
     max-width: 720px;
+  }
+
+  .post-layout {
+      display: flex;
+      gap: 3rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.75rem;
+      align-items: flex-start;
+  }
+
+  .post-layout .main {
+      flex: 1;
+      min-width: 0;
+      max-width: 720px;
+      padding-left: 0;
+      padding-right: 0;
   }
 </style>

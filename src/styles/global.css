@@ -3,6 +3,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
+  --image-background: url("/circuit.svg");
   --color-background: #0a0a12;
   --color-surface: rgba(255,255,255,0.03);
   --color-border: rgba(255,255,255,0.08);
@@ -25,6 +26,8 @@
 * { box-sizing: border-box; }
 
 html {
+  background-image: var(--image-background);
+  background-size: cover;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
@@ -100,4 +103,34 @@ body {
     animation: none;
     opacity: 1;
   }
+}
+
+[id] {
+    scroll-margin-top: 5.5rem;
+}
+
+.prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  background: #191724;
+  border: 0px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.prompt-sign {
+  color: rgba(139,92,246,0.8);
+}
+
+.cursor-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
 }
