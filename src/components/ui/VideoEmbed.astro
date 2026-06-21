@@ -1,0 +1,213 @@
+---
+interface Props {
+  src: string;           // YouTube URL or direct MP4 URL
+  title?: string;
+  caption?: string;
+  poster?: string;       // MP4 only — custom poster image
+  start?: number;        // YouTube only — start time in seconds
+}
+
+const { src, title, caption, poster, start } = Astro.props as Props;
+
+type VideoType = 'youtube' | 'mp4';
+
+const getYouTubeId = (url: string): string | null => {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+};
+
+const youtubeId = getYouTubeId(src);
+const type: VideoType = youtubeId ? 'youtube' : 'mp4';
+
+const embedUrl = youtubeId
+  ? `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0${start ? `&start=${start}` : ''}`
+  : src;
+
+const thumbnailUrl = youtubeId
+  ? `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`
+  : poster ?? null;
+
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+<figure class="video-embed" data-type={type} data-uid={uid}>
+  <div class="video-embed__wrapper">
+    <div class="video-embed__chrome">
+      <span class="video-embed__dot"></span>
+      <span class="video-embed__dot"></span>
+      <span class="video-embed__dot"></span>
+      {title && <span class="video-embed__label">{title}</span>}
+      <span class="video-embed__badge">{type === 'youtube' ? 'youtube' : 'mp4'}</span>
+    </div>
+
+    <div class="video-embed__screen" id={`video-${uid}`}>
+      {thumbnailUrl && (
+        <img
+          src={thumbnailUrl}
+          alt={title ?? ''}
+          class="video-embed__poster"
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+      {!thumbnailUrl && (
+        <div class="video-embed__poster video-embed__poster--blank"></div>
+      )}
+
+      <button
+        class="video-embed__play"
+        aria-label={`Play${title ? `: ${title}` : ''}`}
+        data-embed={embedUrl}
+        data-type={type}
+        data-uid={uid}
+      >
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <circle cx="24" cy="24" r="23.5" stroke="rgba(255,255,255,0.15)"/>
+          <circle cx="24" cy="24" r="23.5" stroke="rgba(0,245,255,0.2)"/>
+          <polygon points="20,16 34,24 20,32" fill="rgba(255,255,255,0.9)"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  {caption && <figcaption class="video-embed__caption">{caption}</figcaption>}
+</figure>
+
+<script src="/src/js/VideoEmbed.ts">
+</script>
+
+<style>
+  .video-embed {
+    margin: 2rem 0;
+  }
+
+  .video-embed__wrapper {
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0a0a12;
+  }
+
+  /* Terminal-style chrome bar */
+  .video-embed__chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+
+  .video-embed__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+
+  .video-embed__dot:nth-child(1) { background: rgba(239,68,68,0.5); }
+  .video-embed__dot:nth-child(2) { background: rgba(245,158,11,0.5); }
+  .video-embed__dot:nth-child(3) { background: rgba(34,197,94,0.5); }
+
+  .video-embed__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.3);
+    margin-left: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  .video-embed__badge {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(0,245,255,0.5);
+    border: 0.5px solid rgba(0,245,255,0.2);
+    border-radius: 3px;
+    padding: 1px 5px;
+    flex-shrink: 0;
+  }
+
+  /* Screen area */
+  .video-embed__screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #050508;
+    overflow: hidden;
+  }
+
+  .video-embed__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.2s ease;
+    margin-top: 0;
+  }
+
+  .video-embed__poster--blank {
+    background: linear-gradient(135deg, #0d0d18 0%, #050508 100%);
+  }
+
+  .video-embed__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .video-embed__play:hover { transform: scale(1.08); }
+
+  .video-embed__play:hover ~ .video-embed__poster,
+  .video-embed__play:focus ~ .video-embed__poster {
+    filter: brightness(0.5);
+  }
+
+  .video-embed__play svg circle:last-of-type {
+    transition: stroke 0.15s ease;
+  }
+
+  .video-embed__play:hover svg circle:last-of-type {
+    stroke: rgba(0,245,255,0.5);
+  }
+
+  :global(.video-embed__iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .video-embed__caption {
+    margin-top: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+</style>
+
