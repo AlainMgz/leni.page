@@ -36,3 +36,4 @@ pnpm-debug.log*
 
 # Dev notes
 Components.md
+src/content/posts/lorem-ipsum.mdx
