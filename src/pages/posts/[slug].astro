@@ -12,6 +12,9 @@ import Oscilloscope from '../../components/ui/Oscilloscope.astro';
 import Math from '../../components/ui/Math.astro';
 import { Tooltip } from '../../components/ui/Tooltip.tsx';
 import { render } from 'astro:content';
+import LinkPreview from '../../components/ui/LinkPreview.astro';
+import VideoEmbed from '../../components/ui/VideoEmbed.astro';
+
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -47,6 +50,8 @@ const { Content, headings } = await render(post);
     Oscilloscope,
     Math,
     Tooltip,
+    LinkPreview,
+    VideoEmbed,
   }}
 />
 </PostLayout>
