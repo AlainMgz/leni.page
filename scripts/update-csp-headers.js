@@ -29,7 +29,7 @@ const csp = [
   `script-src 'self' ${[...hashes].join(' ')}`,
   `style-src 'self'`,
   `style-src-attr 'none'`,
-  `img-src 'self' data: https://www.google.com https://donjon.ledger.com https://ledger.com https://i.ytimg.com`,
+  `img-src 'self' data: https://icons.duckduckgo.com https://donjon.ledger.com https://ledger.com https://i.ytimg.com`,
   `frame-src https://www.youtube-nocookie.com`,
   `font-src 'self'`,
   `connect-src 'self'`,
