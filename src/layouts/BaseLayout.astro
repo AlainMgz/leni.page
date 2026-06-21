@@ -111,6 +111,15 @@ const articleJsonLd = ogType === 'article' && publishDate ? {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- PWA / Android -->
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#09090b" />
+
     <!-- Article-specific OG -->
     {ogType === 'article' && publishDate && (
       <meta property="article:published_time" content={publishDate.toISOString()} />

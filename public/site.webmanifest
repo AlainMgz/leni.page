@@ -1,0 +1,14 @@
+{
+  "name": "Leni's Security Blog",
+  "short_name": "LSecBlog",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#09090b",
+  "background_color": "#09090b",
+  "display": "standalone"
+}
