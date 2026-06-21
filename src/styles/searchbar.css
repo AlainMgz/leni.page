@@ -1,0 +1,24 @@
+@keyframes searchbar-drop {
+    from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes searchbar-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.searchbar-overlay {
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+.searchbar-overlay.visible {
+    opacity: 1;
+    animation: searchbar-fade 0.18s ease forwards;
+}
+.searchbar-panel {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+    transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.searchbar-panel.visible {
+    animation: searchbar-drop 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
