@@ -29,7 +29,7 @@ const csp = [
   `script-src 'self' ${[...hashes].join(' ')}`,
   `style-src 'self'`,
   `style-src-attr 'none'`,
-  `img-src 'self' data: https://google.com https://donjon.ledger.com https://ledger.com https://i.ytimg.com`,
+  `img-src 'self' data: https://www.google.com https://donjon.ledger.com https://ledger.com https://i.ytimg.com`,
   `frame-src https://www.youtube-nocookie.com`,
   `font-src 'self'`,
   `connect-src 'self'`,
@@ -47,7 +47,7 @@ const headers = `/*
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Embedder-Policy: credentialless
 `;
 
 writeFileSync('dist/_headers', headers);

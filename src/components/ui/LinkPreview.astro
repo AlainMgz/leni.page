@@ -39,10 +39,10 @@ if (!title || !description) {
     if (!meta.title)       meta.title       = get('title')       ?? getTitle();
     if (!meta.description) meta.description = get('description') ?? undefined;
     if (!meta.image)       meta.image       = get('image')       ?? undefined;
-    if (!meta.favicon)     meta.favicon     = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+    if (!meta.favicon)     meta.favicon = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
   } catch {
     // fail silently — fallback to URL display
-    if (!meta.favicon) meta.favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+    if (!meta.favicon) meta.favicon = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
   }
 }
 ---
